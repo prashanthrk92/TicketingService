@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class TicketReserveHelper {
+    /**
+     *
+     * @param email the mail address
+     * @return the boolean value
+     */
     public boolean isValidEmail(String email){
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
@@ -17,6 +22,11 @@ public class TicketReserveHelper {
         return pat.matcher(email).matches();
     }
 
+    /**
+     *
+     * @param number the value in number
+     * @return the boolean value
+     */
     public boolean isValidNo(String number) {
         try {
             Integer.parseInt(number);
@@ -29,6 +39,10 @@ public class TicketReserveHelper {
         return true;
     }
 
+    /**
+     *
+     * @param heldSeat the list of held seats
+     */
     public void printSeatHold(SeatHold heldSeat){
         if (heldSeat.getSeats() == null) {
             System.out.println("Invalid number of tickets.");
@@ -46,6 +60,11 @@ public class TicketReserveHelper {
         }
     }
 
+    /**
+     *
+     * @param seats the list of seats
+     * @param status the status of the Seat object
+     */
     public void changeSeatStatus(List<Seat> seats, SeatStatus status){
         for(Seat seat:seats){
             seat.setStatus(status);

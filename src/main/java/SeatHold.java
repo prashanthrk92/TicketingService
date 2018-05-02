@@ -1,8 +1,6 @@
 package main.java;
 import java.util.List;
 
-
-
 public class SeatHold {
     private int seatHoldId;
     private String customerMail;

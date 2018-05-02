@@ -3,7 +3,7 @@ import java.time.Instant;
 import java.util.*;
 
 
-public class TicketServiceImpl {
+public class TicketServiceImpl implements TicketService{
     private Venue venue;
     private int seatCount;
     private int id;
@@ -21,7 +21,11 @@ public class TicketServiceImpl {
         reverseseatIdHoldMap = new HashMap<>();
     }
 
-    /* A method to get the number of available seats*/
+    /**
+     *
+     * @return the total number of seats available at that particular time.
+     */
+    @Override
     public int numSeatsAvailable() {
         seatCount = 0;
         Seat[][] seats = venue.getSeats();
@@ -37,7 +41,13 @@ public class TicketServiceImpl {
         return seatCount;
     }
 
-
+    /**
+     *
+     * @param numSeats the number of seats to be booked
+     * @param customerEmail the customer mail address
+     * @return the seat hold object containing the information of the seats held.
+     */
+    @Override
     public SeatHold findAndHoldSeats(int numSeats, String customerEmail) {
         int seatsAvailable = numSeatsAvailable();
         if(numSeats > seatsAvailable){
@@ -55,7 +65,11 @@ public class TicketServiceImpl {
         return seatHold;
     }
 
-
+    /**
+     *
+     * @param numSeats the number of seats to be booked
+     * @return the list of seats to be held for reservation.
+     */
     public List<Seat> findSeats(int numSeats){
         List<Seat> seatsHeld = new ArrayList<Seat>();
 
@@ -76,6 +90,12 @@ public class TicketServiceImpl {
         return null;
     }
 
+    /**
+     *
+     * @param heldSeats the list of seats held for reservation
+     * @param customerMail the customer mail address
+     * @return the seathold object
+     */
     public SeatHold getHoldSeats(List<Seat> heldSeats, String customerMail){
         Random rnd = new Random();
         id = rnd.nextInt(10000);
@@ -93,12 +113,25 @@ public class TicketServiceImpl {
         return seatHold;
     }
 
+    /**
+     *
+     * @param seatHoldId the id of the seatHold object
+     * @param customerEmail the customer mail address
+     * @return the confirmed reservation details
+     */
+    @Override
     public String reserveSeats(int seatHoldId, String customerEmail) {
         String confirmedReservation = getReservation(seatHoldId,customerEmail);
         seatIdHoldMap.remove(seatHoldId);
         return confirmedReservation;
     }
 
+    /**
+     *
+     * @param seatHoldId the id of the seatHold object
+     * @param customerEmail the customer mail address
+     * @return the confirmed reservation details
+     */
     public String getReservation(int seatHoldId, String customerEmail){
         removeExpiredSeats(Instant.now().getEpochSecond(),heldSeatList);
         List<String> seats = new ArrayList<String>();
@@ -124,6 +157,11 @@ public class TicketServiceImpl {
         }
     }
 
+    /**
+     *
+     * @param currentTime the current Epoch time
+     * @param heldSeatList the list of held seats
+     */
     public void removeExpiredSeats(long currentTime,List<SeatHold> heldSeatList){
         List<SeatHold> tempHeldSeatHold = new ArrayList<>();
         if(heldSeatList == null) return;
